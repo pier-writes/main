@@ -1,0 +1,115 @@
+/*yuni
+cursed Translator
+*/
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <cstring>
+#include <ctype.h>
+
+using namespace std;
+//find the word
+//replace
+
+void ucfirst(string & eng_word, string & cursed_word, string & eng_phrase) {
+  eng_word.at(0) = toupper(eng_word.at(0));
+  cursed_word.at(0) = toupper(cursed_word.at(0));
+
+}
+
+string replace(string eng_word, string cursed_word, string & eng_phrase) {
+
+  int found1 = -1;
+  
+
+  do {
+    //finds the first word.
+    found1 = eng_phrase.find(eng_word);
+
+    if (found1 != -1) {
+      //substr of text before the word + cursedateword + substr of the text after the word
+
+      //i said hello to you
+      //before the word            new word     after the word
+      eng_phrase = eng_phrase.substr(0, found1) + cursed_word + eng_phrase.substr(eng_word.length() + found1);
+    }
+
+  } while (found1 != -1);
+
+  return eng_phrase;
+
+}
+
+string BOOM(string & eng_phrase) {
+  int found2 = -1;
+  int r;
+  string BOOMr = " oTL!";
+  int check = 0;
+
+  do {
+    //finds the first punctions and adds length of BOOMr! characters.
+    found2 = eng_phrase.find_first_of(".!?!", found2 + 7);
+    r = rand() % (2) + 1; //50% chance of getting BOOMr!
+    //cout<<r;
+    if (r == 1) {
+      if (found2 != -1) {
+        //inputs BOOM!
+        eng_phrase = eng_phrase.substr(0, found2 + 1) + BOOMr + eng_phrase.substr(found2 + 1, eng_phrase.length() + 1);
+      }
+    }
+
+  } while (found2 != -1);
+
+  return eng_phrase;
+}
+
+int main() {
+  srand(time(0));
+  string eng_word;
+  string cursed_word;
+  string eng_phrase;
+  string cursed_phrase;
+
+  cout << "Enter your writing here and it will be cursified (Body parts like eyes, hair, nose, fingers, ears u can suggest more): ";
+  getline(cin, eng_phrase);
+
+  int count = 0;
+  int i = 0;
+
+  //for(int i =0; i<12; i++){
+  vector < string > english = {
+    "eyes",
+    "hair",
+    "nose",
+    "fingers",
+    "ears",
+  };
+  vector < string > cursed = {
+    "balls of sight",
+    "strings on my head",
+    "smelling bump",
+    "touch noodles",
+    "sound catchers",
+
+  };
+
+  for (int i = 0; i < english.size(); i++) {
+    //replaces first word and checks caps
+
+    eng_word = english[i];
+    cursed_word = cursed[i];
+
+    replace(eng_word, cursed_word, eng_phrase);
+    ucfirst(eng_word, cursed_word, eng_phrase);
+    replace(eng_word, cursed_word, eng_phrase);
+
+    //change first word to next word
+
+    //cout<<count;
+    //count++;
+
+  }
+
+  cout << BOOM(eng_phrase);
+}
